@@ -2,11 +2,14 @@
 
 #define button 0
 #define flip 27
+#define lightSen 33
+
 #define light1 15
-#define light2 ??
-#define doorPin 18
-#define silPin ?? 
-#define lightSen ??
+#define light2 4
+
+#define doorPin 17
+#define silPin 18
+
 
 Servo door, sil;
 int one = 140;
@@ -19,10 +22,14 @@ void setup() {
   Serial.begin(115200);
   pinMode(button, INPUT);
   pinMode(flip, INPUT);
+  pinMode(lightSen, INPUT);
 
   //Light
   pinMode(light1, OUTPUT);
+  digitalWrite(light1, HIGH);
+  digitalWrite(light2, HIGH);
   pinMode(light2, OUTPUT);
+  
   
   //Servo
   pos = one;
@@ -30,7 +37,6 @@ void setup() {
   door.attach(doorPin);
   sil.setPeriodHertz(50);
   sil.attach(silPin);
-  
 }
 
 void loop() {
@@ -39,27 +45,69 @@ void loop() {
   String out = "";
   int buttRead = analogRead(button);
   int flipRead = analogRead(flip);
-  out = out + String(buttRead) + "," + String(flipRead);
+  int lightRead = analogRead(lightSen);
+  out = out + String(lightRead) + "," + String(flipRead);
+//  out = out + String(lightRead) + "," + String(buttRead) + "," + String(flipRead);
   Serial.println(out);
 
-  if (buttRead == 0) {
-//    play ding dong
-    delay(2000)
-    sil.write(two);
-//    play walk down stairs
-//    play slippers on floor
+  //Dark out
+  if (lightRead > 1000) {
+    digitalWrite(light1, HIGH);
+    digitalWrite(light2, HIGH);
+    flipSwitch(flipRead, true);
+  } 
+  //Light out 
+  else {
+    digitalWrite(light1, LOW);
+    digitalWrite(light2, LOW);  
+    flipSwitch(flipRead, false);
+  }
+}
+
+void flipSwitch(int val, bool darkOut) {
+  // Switch lights off
+  if (darkOut) {
+    if (val == 0) {
+      int curr = digitalRead(light1);
+
+      if (curr == HIGH) {
+        digitalWrite(light1, LOW);
+        digitalWrite(light2, LOW);
+      } else {
+        digitalWrite(light1, HIGH);
+        digitalWrite(light2, HIGH);
+      }
+
+      //play oh my
+    }
+  }
+}
+
+void doorbell(int val) {
+    if (buttRead == 0) {
+//  play ding dong
+    delay(2000);
+    silhouette();
+//  play walk down stairs
+//  play slippers on floor
     delay(9000);
     door.write(two);
-//    play open door
+//  play open door
     delay(5000);
     door.write(one);
-//    play close door
+    delay(9000);
+    silhouette();
+//  play close door
   }
 
-  // Switch lights off
-  if (flipRead == 0) {
-    digitalWrite(light1, LOW);
-    //digitalWrite(light2, LOW);
-    //play oh my
+}
+
+void silhouette(){
+  int pos = sil.read();
+  if (pos == one) {
+    sil.write(two);
+  }
+  else {
+    sil.write(one);
   }
 }
