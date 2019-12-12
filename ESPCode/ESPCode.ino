@@ -8,7 +8,7 @@
 #define light2 4
 
 #define doorPin 17
-#define silPin 18
+#define silPin 19
 
 
 Servo door, sil;
@@ -35,8 +35,11 @@ void setup() {
   pos = one;
   door.setPeriodHertz(50);
   door.attach(doorPin);
+  door.write(one);
   sil.setPeriodHertz(50);
   sil.attach(silPin);
+  sil.write(one);
+  delay(1000);
 }
 
 void loop() {
@@ -46,21 +49,23 @@ void loop() {
   int buttRead = analogRead(button);
   int flipRead = analogRead(flip);
   int lightRead = analogRead(lightSen);
-  out = out + String(lightRead) + "," + String(flipRead);
+//  out = out + String(lightRead) + "," + String(flipRead);
 //  out = out + String(lightRead) + "," + String(buttRead) + "," + String(flipRead);
-  Serial.println(out);
+//  Serial.println(out);
 
   //Dark out
   if (lightRead > 1000) {
     digitalWrite(light1, HIGH);
     digitalWrite(light2, HIGH);
     flipSwitch(flipRead, true);
+    doorbell(buttRead);
   } 
   //Light out 
   else {
     digitalWrite(light1, LOW);
     digitalWrite(light2, LOW);  
     flipSwitch(flipRead, false);
+    doorbell(buttRead);
   }
 }
 
@@ -84,7 +89,7 @@ void flipSwitch(int val, bool darkOut) {
 }
 
 void doorbell(int val) {
-    if (buttRead == 0) {
+    if (val == 0) {
 //  play ding dong
     delay(2000);
     silhouette();
@@ -102,12 +107,21 @@ void doorbell(int val) {
 
 }
 
-void silhouette(){
-  int pos = sil.read();
-  if (pos == one) {
-    sil.write(two);
-  }
-  else {
-    sil.write(one);
+void silhouette() {
+  int curr = sil.read();
+  Serial.println(curr);
+  if (137 < curr) {
+    while (curr > two) {
+      curr -= 1;
+      sil.write(curr);
+      delay(15);
+    }
+  } else if (curr < 47) {
+    Serial.println("hi");
+    while (curr < one) {
+      curr += 1;
+      sil.write(curr);
+      delay(15);
+    }
   }
 }
