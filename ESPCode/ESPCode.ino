@@ -45,14 +45,14 @@ void setup() {
 void loop() {
   
   // Check sensors
-  String out = "";
+  String out;
   int buttRead = analogRead(button);
   int flipRead = analogRead(flip);
   int lightRead = analogRead(lightSen);
-//  out = out + String(lightRead) + "," + String(flipRead);
+  out = String(lightRead) + "," + String(flipRead) + "," + String(buttRead);
 //  out = out + String(lightRead) + "," + String(buttRead) + "," + String(flipRead);
-//  Serial.println(out);
-
+  Serial.print(out);
+  delay(200);
   //Dark out
   if (lightRead > 1000) {
     digitalWrite(light1, HIGH);
@@ -82,8 +82,6 @@ void flipSwitch(int val, bool darkOut) {
         digitalWrite(light1, HIGH);
         digitalWrite(light2, HIGH);
       }
-
-      //play oh my
     }
   }
 }
@@ -95,12 +93,12 @@ void doorbell(int val) {
     silhouette();
 //  play walk down stairs
 //  play slippers on floor
-    delay(9000);
+    delay(7500);
     door.write(two);
 //  play open door
     delay(5000);
     door.write(one);
-    delay(9000);
+    delay(9500);
     silhouette();
 //  play close door
   }
@@ -109,7 +107,7 @@ void doorbell(int val) {
 
 void silhouette() {
   int curr = sil.read();
-  Serial.println(curr);
+
   if (137 < curr) {
     while (curr > two) {
       curr -= 1;
@@ -117,7 +115,7 @@ void silhouette() {
       delay(15);
     }
   } else if (curr < 47) {
-    Serial.println("hi");
+
     while (curr < one) {
       curr += 1;
       sil.write(curr);
