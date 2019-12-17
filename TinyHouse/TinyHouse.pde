@@ -8,9 +8,22 @@ Sampler dingDong, stairsD, stairsU, fDoor, powerDown, cooking, music, tv, bathro
 
 Serial myPort;
 
-boolean cooked = false, danced = false, watched = false, flushed = false, busy = false, power = false;
+boolean cooked = false, danced = false, watched = false, flushed = false, busy = false, power = false, br = true, ds = false;
 int diff = 0;
 long currT, startT;
+
+
+void reset() {
+  cooked = false;
+  danced = false;
+  watched = false;
+  flushed = false;
+}
+
+void inBedroom(boolean val) {
+  br = val;
+  ds = !val;
+}
 
 void setup() {
   size(100, 100);
@@ -40,7 +53,7 @@ void setup() {
 }
 
 void draw() {
-  currT = millis()
+  currT = millis();
   while (myPort.available() > 0) {
     if (diff != 0) {
       busy = true;
@@ -60,6 +73,10 @@ void draw() {
     
     if (flipRead == 0) {
       if (!power) {
+        cooking.stop();
+        tv.stop();
+        music.stop();
+        bathroom.stop();
         powerDown.trigger();
         power = true;
       }
@@ -71,8 +88,10 @@ void draw() {
       dingDong.trigger();
       if (!busy) {
         delay(3000);
-        stairsD.trigger();
-        delay(8000);
+        if (br) {
+          stairsD.trigger();
+          delay(8000);
+        }
         fDoor.trigger();
         delay(5000);
         stairsU.trigger();
@@ -83,6 +102,7 @@ void draw() {
       cooking.trigger();
       diff = 48000;
       startT = millis();
+      inBedroom(false);
       
       reset();
       cooked = true;
@@ -91,7 +111,8 @@ void draw() {
       bathroom.trigger();
       diff = 23000;
       startT = millis();
-  
+      inBedroom(false);
+      
       reset();
       flushed = true;
     }
@@ -99,23 +120,18 @@ void draw() {
       tv.trigger();
       diff = 53000;
       startT = millis();
+      inBedroom(false);
 
       reset();
       watched = true;
     }
     if ((16 <= ind) && (ind <= 20) && (!danced) && (!busy)) {
       music.trigger();
+      inBedroom(true);
       delay(69000);
       
       reset();
       danced = true;
     }
   }
-}
-
-void reset() {
-  cooked = false;
-  danced = false;
-  watched = false;
-  flushed = false;
 }
