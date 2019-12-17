@@ -8,12 +8,12 @@ Sampler dingDong, stairsD, stairsU, fDoor, powerDown, cooking, music, tv, bathro
 
 Serial myPort;
 
-boolean darkOut, cooked, danced, watched, flushed, busy, power = false;
+boolean cooked = false, danced = false, watched = false, flushed = false, busy = false, power = false;
 int diff = 0;
 long currT, startT;
 
 void setup() {
-  size(800, 480);
+  size(100, 100);
   myPort = new Serial(this, Serial.list()[33], 115200);
   
   //Load sounds

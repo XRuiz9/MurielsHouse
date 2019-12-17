@@ -15,6 +15,10 @@ Servo door, sil;
 int one = 140;
 int two = 45;
 int pos;
+int diff = 0;
+
+bool cooked, danced, watched, flushed, busy, dancing = false;
+long currT, startT, busyT;
 
 void setup() {
   
@@ -43,6 +47,22 @@ void setup() {
 }
 
 void loop() {
+  currT = millis();
+
+  if (dancing) {
+    silhouette();
+    if (currT - startT > 68500) {
+      dancing = false;
+    }  
+  }
+
+  if (diff != 0) {
+    busy = true;
+    if (currT - busyT > diff) {
+      diff = 0;
+      busy = false;
+    }
+  }
   
   String out;
   int buttRead = analogRead(button);
@@ -58,7 +78,9 @@ void loop() {
     digitalWrite(lightBr, HIGH);
     digitalWrite(lightDs, HIGH);
     flipSwitch(flipRead, true);
+    exist(ind, true);
     doorbell(buttRead);
+    
   } 
   
   //Light out 
@@ -66,6 +88,7 @@ void loop() {
     digitalWrite(lightBr, LOW);
     digitalWrite(lightDs, LOW);  
     flipSwitch(flipRead, false);
+    exist(ind, false);
     doorbell(buttRead);
   }
   delay(200);
@@ -127,5 +150,52 @@ void silhouette() {
       sil.write(curr);
       delay(15);
     }
+  }
+}
+
+void exist(int val, bool darkOut) {
+  if ((0 <= val) && (val <= 5) && (!cooked) && (!busy)) {
+    downstairs(darkOut);
+    diff = 48000;
+    busyT = millis();
+
+    reset();
+    cooked = true;
+  }
+  if ((6 <= val) && (val <= 9) && (!flushed) && (!busy)) {
+    downstairs(darkOut);
+    diff = 23000;
+    busyT = millis();
+
+    reset();
+    flushed = true;
+  }
+  if ((10 <= val) && (val <= 15) && (!watched) && (!busy)) {
+    downstairs(darkOut);
+    diff = 53000;
+    busyT = millis();
+
+    reset();
+    watched = true;
+  }
+  if ((16 <= val) && (val <= 20) && (!danced)) {
+    dancing = true;
+
+    reset();
+    danced = true;
+  }
+}
+
+void reset() {
+  cooked = false;
+  danced = false;
+  watched = false;
+  flushed = false;
+}
+
+void downstairs(bool darkOut) {
+  if (darkOut) {
+    digitalWrite(lightBr, LOW);
+    digitalWrite(lightDs, HIGH);  
   }
 }
