@@ -4,8 +4,8 @@
 #define flip 27
 #define lightSen 33
 
-#define light1 15
-#define light2 4
+#define lightBr 15
+#define lightDs 4
 
 #define doorPin 17
 #define silPin 19
@@ -25,8 +25,8 @@ void setup() {
   pinMode(lightSen, INPUT);
 
   //Light
-  pinMode(light1, OUTPUT);
-  digitalWrite(light1, HIGH);
+  pinMode(lightBr, OUTPUT);
+  digitalWrite(lightBr, HIGH);
   pinMode(light2, OUTPUT);
   digitalWrite(light2, LOW);
   
@@ -44,69 +44,73 @@ void setup() {
 
 void loop() {
   
-  // Check sensors
   String out;
   int buttRead = analogRead(button);
   int flipRead = analogRead(flip);
   int lightRead = analogRead(lightSen);
-
   int ind = random(0, 3000);
   
   out = String(lightRead) + "," + String(flipRead) + "," + String(buttRead) + "," + String(ind);
   Serial.print(out);
-  delay(200);
+  
   //Dark out
   if (lightRead > 2000) {
-    digitalWrite(light1, HIGH);
-    digitalWrite(light2, HIGH);
+    digitalWrite(lightBr, HIGH);
+    digitalWrite(lightDs, HIGH);
     flipSwitch(flipRead, true);
     doorbell(buttRead);
   } 
+  
   //Light out 
   else {
-    digitalWrite(light1, LOW);
-    digitalWrite(light2, LOW);  
+    digitalWrite(lightBr, LOW);
+    digitalWrite(lightDs, LOW);  
     flipSwitch(flipRead, false);
     doorbell(buttRead);
   }
+  delay(200);
 }
 
+//Handles switching lights on and off
 void flipSwitch(int val, bool darkOut) {
   // Switch lights off
   if (darkOut) {
     if (val == 0) {
-      int curr = digitalRead(light1);
+      int currBr = digitalRead(lightBr);
+      int currDs = digitalRead(lightDs);
 
-      if (curr == HIGH) {
-        digitalWrite(light1, LOW);
-        digitalWrite(light2, LOW);
+      //If either lights are on, turn them off
+      if ((currBr == HIGH) || (currDs == HIGH)) {
+        digitalWrite(lightBr, LOW);
+        digitalWrite(lightDs, LOW);
       } else {
-        digitalWrite(light1, HIGH);
-        digitalWrite(light2, HIGH);
+        digitalWrite(lightBr, HIGH);
+        digitalWrite(lightDs, HIGH);
       }
     }
   }
 }
 
+//Handles doorbell sequence
 void doorbell(int val) {
     if (val == 0) {
-//  play ding dong
-    delay(2000);
-    silhouette();
-//  play walk down stairs
-//  play slippers on floor
-    delay(7500);
-    door.write(two);
-//  play open door
-    delay(5000);
-    door.write(one);
-    delay(9500);
-    silhouette();
-//  play close door
+      //Ding dong
+      delay(2000);
+      silhouette();
+      //Walk down stairs
+      //Slippers on floor
+      delay(7500);
+      door.write(two);
+      //Open and close door
+      delay(5000);
+      door.write(one);
+      //Walk back up stairs
+      delay(9500);
+      silhouette();
   }
-
 }
 
+//Handles movement of silhouette
 void silhouette() {
   int curr = sil.read();
 

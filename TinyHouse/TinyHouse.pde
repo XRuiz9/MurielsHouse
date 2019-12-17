@@ -4,13 +4,13 @@ import ddf.minim.ugens.*;
 
 Minim minim;
 AudioOutput out;
-//Sampler dingDong, stairsU, stairsD, doorO, doorC;
 Sampler dingDong, stairsD, stairsU, fDoor, powerDown, cooking, music, tv, bathroom;
 
 Serial myPort;
 
-boolean power = false;
-boolean darkOut, cooked, danced, watched, flushed;
+boolean darkOut, cooked, danced, watched, flushed, busy, power = false;
+int diff = 0;
+long currT, startT;
 
 void setup() {
   size(800, 480);
@@ -40,8 +40,15 @@ void setup() {
 }
 
 void draw() {
+  currT = millis()
   while (myPort.available() > 0) {
-    
+    if (diff != 0) {
+      busy = true;
+      if (currT - startT > diff) {
+        diff = 0;
+        busy = false;
+      }
+    }
     String inMsg = myPort.readString();
     String[] input = split(inMsg, ",");
     
@@ -62,36 +69,41 @@ void draw() {
     
     if (buttRead == 0) {
       dingDong.trigger();
-      delay(3000);
-      stairsD.trigger();
-      delay(8000);
-      fDoor.trigger();
-      delay(5000);
-      stairsU.trigger();
+      if (!busy) {
+        delay(3000);
+        stairsD.trigger();
+        delay(8000);
+        fDoor.trigger();
+        delay(5000);
+        stairsU.trigger();
+      }
     }
     
-    if ((0 <= ind) && (ind <= 5) && (!cooked)) {
+    if ((0 <= ind) && (ind <= 5) && (!cooked) && (!busy)) {
       cooking.trigger();
-      delay(48000);
+      diff = 48000;
+      startT = millis();
       
       reset();
       cooked = true;
     }
-    if ((6 <= ind) && (ind <= 9) && (!flushed)) {
+    if ((6 <= ind) && (ind <= 9) && (!flushed) && (!busy)) {
       bathroom.trigger();
-      delay(23000);
-      
+      diff = 23000;
+      startT = millis();
+  
       reset();
       flushed = true;
     }
-    if ((10 <= ind) && (ind <= 15) && (!watched)) {
+    if ((10 <= ind) && (ind <= 15) && (!watched) && (!busy)) {
       tv.trigger();
-      delay(53000);
-      
+      diff = 53000;
+      startT = millis();
+
       reset();
       watched = true;
     }
-    if ((16 <= ind) && (ind <= 20) && (!danced)) {
+    if ((16 <= ind) && (ind <= 20) && (!danced) && (!busy)) {
       music.trigger();
       delay(69000);
       
