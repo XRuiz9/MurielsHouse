@@ -2,6 +2,8 @@
 
 Muriel's House is a piece that imagines what it would look like if the dancing mannequins and cardboard cutouts from Kevin McCallister's clever trick lived an actual life of their own. All that is visible to the viewer is Muriel's silhouette, but that doesn't stop her from living her own life independent of outsider interaction.
 
+![Muriel's House](https://github.com/XRuiz9/TinyHouse/blob/master/promo.png)
+
 ## Install It Yourself!
 
 In order to replicate this device you'll need the following:
@@ -31,4 +33,6 @@ Unless you decide to create an enclosure identical to mine, the sensors, buttons
 
 #### Muriel and the Door
 Muriel and the door are both controlled with a servo motor. Muriel is a cutout adhered to a popsicle stick that is attached to the motors arm, while the door is a part of the whole house enclosure, but the cardboard has been scored so that it opens with ease. Additionally, a cut paperclip connects the motors arm to the door, along with lots of hot glue.
+
+![Motors](https://github.com/XRuiz9/TinyHouse/blob/master/motors.png)
 
