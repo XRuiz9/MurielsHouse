@@ -25,14 +25,30 @@ The motors and sensors can go wherever you'd like in your enclosure, but pay spe
 - Both LEDs go from pin to ground (so they can be turned on and off by the pin)
 - Both the button and switch go from pin to ground (so switching/pressing them will return 0s)
 - The ESPCode.ino file handles the LEDs and motors
-- The TinyHouse.pde file handles all the audio
+- The TinyHouse.pde file handles all the audio, all of which is including in TinyHouse's data folder
 
 ### The Enclosure
 
 Unless you decide to create an enclosure identical to mine, the sensors, buttons, and motors can go anywhere you like. It is best to first plan a general guide of where you want things to go before you begin, but you'll find that things may have to move around during development.
 
+The house is split into two floors:
+The first floor contains the speaker, the button (doorbell), the switch (power switch), the downstairs LED, and a hole for the Micro-USB cable.
+
+
+
+The second floor contains the motor for Muriel's silhouette, the upstairs LED, the breadboard and ESP32, and holes for wires from the first floor to come up through (and a space for the motor which lies midway between the first and second floors).
+
+
+
+The roof is also detachable, and the only thing connected to it is the photo-sensitive resistor as that is the only place where light actually comes into the house.
+
+
+
 #### Muriel and the Door
 Muriel and the door are both controlled with a servo motor. Muriel is a cutout adhered to a popsicle stick that is attached to the motors arm, while the door is a part of the whole house enclosure, but the cardboard has been scored so that it opens with ease. Additionally, a cut paperclip connects the motors arm to the door, along with lots of hot glue.
 
 ![Motors](https://github.com/XRuiz9/TinyHouse/blob/master/motors.png)
+
+#### The LEDs
+The LEDs are placed wherever they hit the windows right. Surprisingly, LEDs are quite directional with their lighting so pointing it at certain things looks almost like a spotlight. All you have to do is make sure that spotlight is hitting the windows the way you like it, especially if a silhouette is passing in front of it. Rooms where there are LEDs are painted white so that the light reflects better. The material covering the windows is a semi-transparent plastic that I found from a craft store. It is opaque enough to obscure the inner mechanics, but transparent enough to maintain the shadow of the sihouette.
 
