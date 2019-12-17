@@ -10,7 +10,7 @@ Sampler dingDong, stairsD, stairsU, fDoor, powerDown, cooking, music, tv, bathro
 Serial myPort;
 
 boolean power = false;
-boolean darkOut;
+boolean darkOut, cooked, danced, watched, flushed;
 
 void setup() {
   size(800, 480);
@@ -41,14 +41,17 @@ void setup() {
 
 void draw() {
   while (myPort.available() > 0) {
-    float ind = random(0, 3000);
-    println(ind);
-    String inMsg = myPort.readString();
-    //println(inMsg);
-    String[] input = split(inMsg, ",");
-    //printArray(input);
     
-    if (int(input[1]) == 0) {
+    String inMsg = myPort.readString();
+    String[] input = split(inMsg, ",");
+    
+    int flipRead = int(input[1]);
+    int buttRead = int(input[2]);
+    int ind = int(input[3]);
+    
+    println(ind);
+    
+    if (flipRead == 0) {
       if (!power) {
         powerDown.trigger();
         power = true;
@@ -57,7 +60,7 @@ void draw() {
       power = false;
     }
     
-    if (int(input[2]) == 0) {
+    if (buttRead == 0) {
       dingDong.trigger();
       delay(3000);
       stairsD.trigger();
@@ -67,21 +70,40 @@ void draw() {
       stairsU.trigger();
     }
     
-    if ((0 <= ind) && (ind <= 5)) {
+    if ((0 <= ind) && (ind <= 5) && (!cooked)) {
       cooking.trigger();
       delay(48000);
+      
+      reset();
+      cooked = true;
     }
-    if ((6 <= ind) && (ind <= 9)) {
+    if ((6 <= ind) && (ind <= 9) && (!flushed)) {
       bathroom.trigger();
       delay(23000);
+      
+      reset();
+      flushed = true;
     }
-    if ((10 <= ind) && (ind <= 15)) {
+    if ((10 <= ind) && (ind <= 15) && (!watched)) {
       tv.trigger();
       delay(53000);
+      
+      reset();
+      watched = true;
     }
-    if ((16 <= ind) && (ind <= 20)) {
+    if ((16 <= ind) && (ind <= 20) && (!danced)) {
       music.trigger();
       delay(69000);
+      
+      reset();
+      danced = true;
     }
   }
+}
+
+void reset() {
+  cooked = false;
+  danced = false;
+  watched = false;
+  flushed = false;
 }

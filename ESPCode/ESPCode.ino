@@ -27,8 +27,8 @@ void setup() {
   //Light
   pinMode(light1, OUTPUT);
   digitalWrite(light1, HIGH);
-  digitalWrite(light2, HIGH);
   pinMode(light2, OUTPUT);
+  digitalWrite(light2, LOW);
   
   
   //Servo
@@ -49,12 +49,14 @@ void loop() {
   int buttRead = analogRead(button);
   int flipRead = analogRead(flip);
   int lightRead = analogRead(lightSen);
-  out = String(lightRead) + "," + String(flipRead) + "," + String(buttRead);
-//  out = out + String(lightRead) + "," + String(buttRead) + "," + String(flipRead);
+
+  int ind = random(0, 3000);
+  
+  out = String(lightRead) + "," + String(flipRead) + "," + String(buttRead) + "," + String(ind);
   Serial.print(out);
   delay(200);
   //Dark out
-  if (lightRead > 1000) {
+  if (lightRead > 2000) {
     digitalWrite(light1, HIGH);
     digitalWrite(light2, HIGH);
     flipSwitch(flipRead, true);
