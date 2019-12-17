@@ -34,15 +34,15 @@ Unless you decide to create an enclosure identical to mine, the sensors, buttons
 The house is split into two floors:
 The first floor contains the speaker, the button (doorbell), the switch (power switch), the downstairs LED, and a hole for the Micro-USB cable.
 
-
+![First Floor](https://github.com/XRuiz9/MurielsHouse/blob/master/first.png)
 
 The second floor contains the motor for Muriel's silhouette, the upstairs LED, the breadboard and ESP32, and holes for wires from the first floor to come up through (and a space for the motor which lies midway between the first and second floors).
 
-
+![Second Floor](https://github.com/XRuiz9/MurielsHouse/blob/master/second.png)
 
 The roof is also detachable, and the only thing connected to it is the photo-sensitive resistor as that is the only place where light actually comes into the house.
 
-
+![Roof](https://github.com/XRuiz9/MurielsHouse/blob/master/roof.png)
 
 #### Muriel and the Door
 Muriel and the door are both controlled with a servo motor. Muriel is a cutout adhered to a popsicle stick that is attached to the motors arm, while the door is a part of the whole house enclosure, but the cardboard has been scored so that it opens with ease. Additionally, a cut paperclip connects the motors arm to the door, along with lots of hot glue.
