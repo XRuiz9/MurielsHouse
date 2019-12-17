@@ -15,7 +15,7 @@ In order to replicate this device you'll need the following:
 - A switch, a button, and a photosensitive resistor
 - A bread board and a number of wires
 - A bluetooth speaker
-- Cardboard, hot glue, felt, popsicle sticks, felt, black paper, fairy lights
+- Cardboard, hot glue, felt, popsicle sticks, felt, black paper, fairy lights, paint
 
 ### The Code
 
@@ -52,3 +52,11 @@ Muriel and the door are both controlled with a servo motor. Muriel is a cutout a
 #### The LEDs
 The LEDs are placed wherever they hit the windows right. Surprisingly, LEDs are quite directional with their lighting so pointing it at certain things looks almost like a spotlight. All you have to do is make sure that spotlight is hitting the windows the way you like it, especially if a silhouette is passing in front of it. Rooms where there are LEDs are painted white so that the light reflects better. The material covering the windows is a semi-transparent plastic that I found from a craft store. It is opaque enough to obscure the inner mechanics, but transparent enough to maintain the shadow of the sihouette.
 
+#### The Doorbell and Power Switch
+The doorbell is a simple button that is just glued on the inside of the box. A small screw acts as the actual doorbell that the user presses. The small hole was punctures through the box and the power switch was pushed through. The switch came with washers and bolts that could then be used to tighten the switch and secure it's position.
+
+Once all the mechanisms are in place it's just a matter of decorating it the way you want. Starry night sky enclosure that is featured in the demo video above is not necessary and was created solely as a pretty way to demonstrate the way the lights turn on/off during the "night/day."
+
+### Power Considerations:
+This entire piece is powered with one ESP32 plugged into a laptop. No external power sources were used. 
+This piece could also run on a Raspberry Pi but you run the risk of slower processing, especially since there are a lot of audio files that triggered throughout the piece. Additionally you'd have to connect the speaker to the Raspberry Pi via bluetooth or aux cord.
